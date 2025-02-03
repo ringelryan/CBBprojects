@@ -1,6 +1,7 @@
 
-OPEN_PENALTY = 4
-EXTEND_PENALTY = 1
+OPEN_PENALTY = -4
+EXTEND_PENALTY = -1
+NEG_INFINITY = -1000 # big enough ?
 
 SCORE = [[5, -1, -4, -4, -2], [-1, 5, -4, -4, -2], [-4, -4, 5, -1, -2], [-4, -4, -1, 5, -2], [-2, -2, -2, -2, -1]]
 
@@ -12,20 +13,20 @@ def alignTwoSequences(seq1, seq2):
     rows = len(string1) + 1
     cols = len(string2) + 1
 
-    # create Match matrix
+    # create Match matrix: Score of best alignment ending in match
     M = [[0] * cols for _ in range(rows)]
 
-    # create Insertion matrix
+    # create Insertion matrix: Score of best alignment ending in Insertion
     I = [[0] * cols for _ in range(rows)]
 
-    # create Deletion matrix
+    # create Deletion matrix: Score of best alignment ending in Deletion
     D = [[0] * cols for _ in range(rows)]
 
     # Base case visualization, < is negative infinity
 
     # M Matrix
     # * * T A G
-    # * 0 < < <
+    # * < < < <
     # C <-4
     # A <
     # T <
@@ -50,8 +51,31 @@ def alignTwoSequences(seq1, seq2):
 
 
     # Initialize base cases for matrices 
-     for i in rows:
-        for j in cols:
+    # __________________________________
+
+    # first column
+    j = 0
+    for i in rows:
+        M[i][j] = NEG_INFINITY
+        I[i][j] = OPEN_PENALTY + (i-1) * EXTEND_PENALTY
+        D[i][j] = NEG_INFINITY
+
+    # first row
+    i = 0
+    for j in cols:
+        M[i][j] = NEG_INFINITY
+        I[i][j] = NEG_INFINITY
+        D[i][j] = OPEN_PENALTY + (j-1) * EXTEND_PENALTY
+
+    # corners
+    M[0][0] = NEG_INFINITY
+    I[0][0] = NEG_INFINITY
+    D[0][0] = NEG_INFINITY
+
+    M[1][1] = # Score of match/mismatch
+
+
+        
 
 
 
