@@ -55,29 +55,56 @@ def alignTwoSequences(seq1, seq2):
 
     # first column
     j = 0
-    for i in rows:
+    for i in range(rows):
         M[i][j] = NEG_INFINITY
         I[i][j] = OPEN_PENALTY + (i-1) * EXTEND_PENALTY
         D[i][j] = NEG_INFINITY
 
     # first row
     i = 0
-    for j in cols:
+    for j in range(cols):
         M[i][j] = NEG_INFINITY
         I[i][j] = NEG_INFINITY
         D[i][j] = OPEN_PENALTY + (j-1) * EXTEND_PENALTY
 
     # corners
-    M[0][0] = NEG_INFINITY
+    M[0][0] = 0  # allows for M[1][1] to be score of first match/mismatch
     I[0][0] = NEG_INFINITY
     D[0][0] = NEG_INFINITY
 
-    M[1][1] = # Score of match/mismatch
+    #________________________________________________
+
+
+    # Iterate through and fill out matrices
+    for i in range(1, rows):
+        for j in range(1, cols):
+            si = getLetterIndex(seq1[i])
+            sj = getLetterIndex(seq2[j])
+            s = SCORE[si][sj]
+
+            # Calculate values in matrices based on formulas
+            M[i][j] = max((M[i-1][j-1] + s), (I[i-1][j-1] + s), (D[i-1][j-1] + s))
+            I[i][j] = max((M[i][j-1] + OPEN_PENALTY), (I[i][j-1] + EXTEND_PENALTY))
+            D[i][j] = max((M[i-1][j] + OPEN_PENALTY), (D[i-1][j] + EXTEND_PENALTY))
+
+
 
 
         
 
-
+# Take in one letter, return 0, 1, 2, 3, or 4
+def getLetterIndex(letter):
+    match letter:
+        case 'A':
+            return 0
+        case 'C':
+            return 1
+        case 'G':
+            return 2
+        case 'T':
+            return 3
+        case 'N':
+            return 4
 
 
     
