@@ -21,6 +21,39 @@ def alignTwoSequences(seq1, seq2):
     # create Deletion matrix
     D = [[0] * cols for _ in range(rows)]
 
+    # Base case visualization, < is negative infinity
+
+    # M Matrix
+    # * * T A G
+    # * 0 < < <
+    # C <-4
+    # A <
+    # T <
+    #______________
+    # I Matrix:  - - -
+    #            C A T
+
+    # * * T A G
+    # * < < < <
+    # C-4
+    # A-5
+    # T-6
+    #______________
+    # D Matrix:  T A G
+    #            - - -
+
+    # * * T A G
+    # * <-4-5-6
+    # C <
+    # A <
+    # T <
+
+
+    # Initialize base cases for matrices 
+     for i in rows:
+        for j in cols:
+
+
 
 
     
