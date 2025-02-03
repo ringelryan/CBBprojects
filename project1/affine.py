@@ -10,8 +10,8 @@ SCORE = [[5, -1, -4, -4, -2], [-1, 5, -4, -4, -2], [-4, -4, 5, -1, -2], [-4, -4,
 def alignTwoSequences(seq1, seq2):
 
     # rows & cols +1 to account for boundary conditions
-    rows = len(string1) + 1
-    cols = len(string2) + 1
+    rows = len(seq1) + 1
+    cols = len(seq2) + 1
 
     # create Match matrix: Score of best alignment ending in match
     M = [[0] * cols for _ in range(rows)]
@@ -78,8 +78,8 @@ def alignTwoSequences(seq1, seq2):
     # Iterate through and fill out matrices
     for i in range(1, rows):
         for j in range(1, cols):
-            si = getLetterIndex(seq1[i])
-            sj = getLetterIndex(seq2[j])
+            si = getLetterIndex(seq1[i-1])
+            sj = getLetterIndex(seq2[j-1])
             s = SCORE[si][sj]
 
             # Calculate values in matrices based on formulas
@@ -88,24 +88,39 @@ def alignTwoSequences(seq1, seq2):
             D[i][j] = max((M[i-1][j] + OPEN_PENALTY), (D[i-1][j] + EXTEND_PENALTY))
 
 
+    #After Done, print out best scores
+    print("Best M: " + str(M[rows-1][cols-1]))
+    print("Best I: " + str(I[rows-1][cols-1]))
+    print("Best D: " + str(D[rows-1][cols-1]))
 
+    # print("Best M: " + str(M))
+    # print("Best I: " + str(I))
+    # print("Best D: " + str(D))
 
         
 
 # Take in one letter, return 0, 1, 2, 3, or 4
 def getLetterIndex(letter):
-    match letter:
-        case 'A':
-            return 0
-        case 'C':
-            return 1
-        case 'G':
-            return 2
-        case 'T':
-            return 3
-        case 'N':
-            return 4
+    if letter == 'A':
+        return 0
+    elif letter == 'C':
+        return 1
+    elif letter == 'G':
+        return 2
+    elif letter == 'T':
+        return 3
+    elif letter == 'N':
+        return 4
+        
 
 
-    
+def main():
+    seq1 = "GTACA"
+    seq2 = "GATA"
 
+    alignTwoSequences(seq1, seq2)
+
+
+
+if __name__ == "__main__":
+    main()
