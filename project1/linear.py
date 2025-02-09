@@ -262,6 +262,16 @@ output = format_alignment_output(1, "test3", "test4", align1, align2, stats)
 print(output)
 
 
+#testing matxches 
+seq1 = "AAAGNAGN"
+seq2 = "AAATAATG"
+gap_penalty = 1
+
+align1, align2, score = needleman_wunsch(seq1, seq2, substitution_matrix, gap_penalty)
+stats = calc_sum_stats(align1, align2, score)
+output = format_alignment_output(1, "test3", "test4", align1, align2, stats)
+print(output)
+
 
     
 
