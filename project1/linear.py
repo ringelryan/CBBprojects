@@ -1,4 +1,6 @@
 
+# Ashley E. Deleon - Linear Scoring 
+
 #read seq from the fasta files
 def read_fasta(filename):
     sequences = []
