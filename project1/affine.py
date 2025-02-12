@@ -81,22 +81,22 @@ def alignTwoSequences(seq1, seq2):
     j = 0
     for i in range(rows):
         M[i][j] = NEG_INFINITY
-        I[i][j] = OPEN_PENALTY + (i-1) * EXTEND_PENALTY
-        D[i][j] = NEG_INFINITY
+        I[i][j] = NEG_INFINITY
+        D[i][j] = OPEN_PENALTY + (j-1) * EXTEND_PENALTY
 
-        traceback_M[i][j] = "MIU"
-        traceback_I[i][j] = "IIU"
+        traceback_M[i][j] = "MDU"
+        traceback_D[i][j] = "DDU"
 
 
     # first row
     i = 0
     for j in range(cols):
         M[i][j] = NEG_INFINITY
-        I[i][j] = NEG_INFINITY
-        D[i][j] = OPEN_PENALTY + (j-1) * EXTEND_PENALTY
+        I[i][j] = OPEN_PENALTY + (i-1) * EXTEND_PENALTY
+        D[i][j] = NEG_INFINITY
 
-        traceback_M[i][j] = "MDL"
-        traceback_D[i][j] = "DDL"
+        traceback_M[i][j] = "MIL"
+        traceback_I[i][j] = "IIL"
 
     # corners
     M[0][0] = 0  # allows for M[1][1] to be score of first match/mismatch
@@ -134,23 +134,23 @@ def alignTwoSequences(seq1, seq2):
             # store values in traceback matrices based on max value: First letter is which matrix, second letter is diag, up, or left
 
             # traceback for M matrix
-            if (M[i-1][j-1] + s) >= (I[i-1][j-1] + s) and (M[i-1][j-1] + s) >= (D[i-1][j-1] + s):
+            if (M[i-1][j-1] + s) > (I[i-1][j-1] + s) and (M[i-1][j-1] + s) > (D[i-1][j-1] + s):
                 traceback_M[i][j] = "MMD" # traceback points to M matrix on diagonal
-            elif (I[i-1][j-1] + s) >= (M[i-1][j-1] + s) and (I[i-1][j-1] + s) >= (D[i-1][j-1] + s):
+            elif (I[i-1][j-1] + s) > (M[i-1][j-1] + s) and (I[i-1][j-1] + s) > (D[i-1][j-1] + s):
                 traceback_M[i][j] = "MID" # traceback came from  I matrix on diagonal
-            elif (D[i-1][j-1] + s) >= (M[i-1][j-1] + s) and (D[i-1][j-1] + s) >= (I[i-1][j-1] + s):
+            elif (D[i-1][j-1] + s) > (M[i-1][j-1] + s) and (D[i-1][j-1] + s) > (I[i-1][j-1] + s):
                 traceback_M[i][j] = "MDD" # traceback came from D matrix on diagonal
 
             # traceback for I matrix
-            if (M[i][j-1] + OPEN_PENALTY) >= (I[i][j-1] + EXTEND_PENALTY):
+            if (M[i][j-1] + OPEN_PENALTY) > (I[i][j-1] + EXTEND_PENALTY):
                 traceback_I[i][j] = "IML" # traceback came from M matrix from left
-            elif (I[i][j-1] + EXTEND_PENALTY) >= (M[i][j-1] + OPEN_PENALTY):
+            elif (I[i][j-1] + EXTEND_PENALTY) > (M[i][j-1] + OPEN_PENALTY):
                 traceback_I[i][j] = "IIL" # traceback came from I matrix from left
 
             # traceback for D matrix
-            if (M[i-1][j] + OPEN_PENALTY) >= (D[i-1][j] + EXTEND_PENALTY):
+            if (M[i-1][j] + OPEN_PENALTY) > (D[i-1][j] + EXTEND_PENALTY):
                 traceback_D[i][j] = "DMU" # traceback came from M matrix from Up
-            elif (D[i-1][j] + EXTEND_PENALTY) >= (M[i-1][j] + OPEN_PENALTY):
+            elif (D[i-1][j] + EXTEND_PENALTY) > (M[i-1][j] + OPEN_PENALTY):
                 traceback_D[i][j] = "DDU" # traceback came from D matrix from Up
 
 
@@ -159,8 +159,24 @@ def alignTwoSequences(seq1, seq2):
     print("Best I: " + str(I[rows-1][cols-1]))
     print("Best D: " + str(D[rows-1][cols-1]))
 
-    printTraceback(seq1, seq2, traceback_M, traceback_D, traceback_I, traceback_M)
+    print("M: " + str(M))
+    print("I: " + str(I))
+    print("D: " + str(D))
 
+    print("trace_M" + str(traceback_M))
+    print("trace_I" + str(traceback_I))
+    print("trace_D" + str(traceback_D))
+
+    # call traceback on correct matrix
+    if (M[rows-1][cols-1]) >= (I[rows-1][cols-1]) and (M[rows-1][cols-1]) >= (D[rows-1][cols-1]):
+        print("M highest")
+        printTraceback(seq1, seq2, traceback_M, traceback_I, traceback_D, traceback_M)
+    elif (I[rows-1][cols-1]) >= (M[rows-1][cols-1]) and (I[rows-1][cols-1]) >= (D[rows-1][cols-1]):
+        print("I highest")
+        printTraceback(seq1, seq2, traceback_M, traceback_I, traceback_D, traceback_I)
+    elif (D[rows-1][cols-1]) >= (M[rows-1][cols-1]) and (D[rows-1][cols-1]) >= (I[rows-1][cols-1]):
+        print("D highest")
+        printTraceback(seq1, seq2, traceback_M, traceback_I, traceback_D, traceback_D)
 
 # Print alignment of the two sequences, startMatrix should be traceback matrix of the matrix with highest alignment score in bottom right corner
 def printTraceback(seq1, seq2, traceback_M, traceback_I, traceback_D, curMatrix):
@@ -191,6 +207,7 @@ def printTraceback(seq1, seq2, traceback_M, traceback_I, traceback_D, curMatrix)
         # sequences are 0 indexed, retrieve using i-1/ j-1
 
         if letter_one == 'M':
+            print("match: " + trace_code)
             # i, j is a Match/ Mismatch: 
             line1.append(seq1[i-1])
 
@@ -202,23 +219,17 @@ def printTraceback(seq1, seq2, traceback_M, traceback_I, traceback_D, curMatrix)
 
             line3.append(seq2[j-1])
         elif letter_one == 'I':
+            print("Insertion: " + trace_code)
             # i, j is insertion: line3 will have -
             line1.append('-')
             line2.append(' ')
             line3.append(seq2[j-1])
         elif letter_one == 'D':
+            print("deletion: " + trace_code)
             # i, j is deletion: line1 will have -
             line1.append(seq1[i-1])
             line2.append(' ')
             line3.append('-')
-
-        # retrieve new trace_code from curMatrix and direction
-        if letter_two == 'M':
-            curMatrix = traceback_M
-        elif letter_two == 'I':
-            curMatrix = traceback_I
-        elif letter_two == 'D':
-            curMatrix = traceback_D
 
         # Update i and j based on direction
         if letter_three == 'D':
@@ -232,7 +243,20 @@ def printTraceback(seq1, seq2, traceback_M, traceback_I, traceback_D, curMatrix)
             # left
             j = j-1
 
-        trace_code = curMatrix[i][j]
+        # retrieve new trace_code from curMatrix and direction
+        if letter_two == 'M':
+            
+            trace_code = traceback_M[i][j]
+            print("letter 2 is M, new code is: "+trace_code)
+        elif letter_two == 'I':
+            trace_code = traceback_I[i][j]
+            # print("traceback_I: " + str(traceback_I))
+            print("letter 2 is I, new code is: "+trace_code)
+        elif letter_two == 'D':
+            trace_code = traceback_D[i][j]
+            print("letter 2 is D, new code is: "+trace_code)
+
+        
 
 
     line1_string = "".join(reversed(line1))
@@ -261,8 +285,8 @@ def getLetterIndex(letter):
 
 
 def main():
-    seq1 = "TCAG"
-    seq2 = "TACAG"
+    seq1 = "TAC"
+    seq2 = "ATT"
 
     # Read Sequences from class folder
 
