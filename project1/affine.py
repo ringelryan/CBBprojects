@@ -84,6 +84,10 @@ def alignTwoSequences(seq1, seq2):
         I[i][j] = OPEN_PENALTY + (i-1) * EXTEND_PENALTY
         D[i][j] = NEG_INFINITY
 
+        traceback_M[i][j] = "MIU"
+        traceback_I[i][j] = "IIU"
+
+
     # first row
     i = 0
     for j in range(cols):
@@ -91,10 +95,26 @@ def alignTwoSequences(seq1, seq2):
         I[i][j] = NEG_INFINITY
         D[i][j] = OPEN_PENALTY + (j-1) * EXTEND_PENALTY
 
+        traceback_M[i][j] = "MDL"
+        traceback_D[i][j] = "DDL"
+
     # corners
     M[0][0] = 0  # allows for M[1][1] to be score of first match/mismatch
     I[0][0] = NEG_INFINITY
     D[0][0] = NEG_INFINITY
+
+    traceback_M[0][0] = ""
+    traceback_I[0][0] = ""
+    traceback_D[0][0] = ""
+
+
+    # Base Cases for traceback matrices: 
+    # Top of D should trace to starting with deletion
+    # Side of I should trace to starting with insertion
+    # Top of M should trace to starting with deletion
+    # Side of M should trace to starting with insertion
+
+
 
     #________________________________________________
 
@@ -183,14 +203,14 @@ def printTraceback(seq1, seq2, traceback_M, traceback_I, traceback_D, curMatrix)
             line3.append(seq2[j-1])
         elif letter_one == 'I':
             # i, j is insertion: line3 will have -
-            line1.append(seq1[i-1])
-            line2.append(' ')
-            line3.append('-')
-        elif letter_one == 'D':
-            # i, j is deletion: line1 will have -
             line1.append('-')
             line2.append(' ')
             line3.append(seq2[j-1])
+        elif letter_one == 'D':
+            # i, j is deletion: line1 will have -
+            line1.append(seq1[i-1])
+            line2.append(' ')
+            line3.append('-')
 
         # retrieve new trace_code from curMatrix and direction
         if letter_two == 'M':
@@ -241,8 +261,8 @@ def getLetterIndex(letter):
 
 
 def main():
-    seq1 = "ACCTAG"
-    seq2 = "GCAATTAG"
+    seq1 = "TCAG"
+    seq2 = "TACAG"
 
     # Read Sequences from class folder
 
