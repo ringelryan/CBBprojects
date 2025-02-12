@@ -170,16 +170,16 @@ def alignTwoSequences(seq1, seq2):
     # call traceback on correct matrix
     if (M[rows-1][cols-1]) >= (I[rows-1][cols-1]) and (M[rows-1][cols-1]) >= (D[rows-1][cols-1]):
         print("M highest")
-        printTraceback(seq1, seq2, traceback_M, traceback_I, traceback_D, traceback_M)
+        printTraceback(seq1, seq2, traceback_M, traceback_I, traceback_D, traceback_M, M[rows-1][cols-1])
     elif (I[rows-1][cols-1]) >= (M[rows-1][cols-1]) and (I[rows-1][cols-1]) >= (D[rows-1][cols-1]):
         print("I highest")
-        printTraceback(seq1, seq2, traceback_M, traceback_I, traceback_D, traceback_I)
+        printTraceback(seq1, seq2, traceback_M, traceback_I, traceback_D, traceback_I, I[rows-1][cols-1])
     elif (D[rows-1][cols-1]) >= (M[rows-1][cols-1]) and (D[rows-1][cols-1]) >= (I[rows-1][cols-1]):
         print("D highest")
-        printTraceback(seq1, seq2, traceback_M, traceback_I, traceback_D, traceback_D)
+        printTraceback(seq1, seq2, traceback_M, traceback_I, traceback_D, traceback_D, D[rows-1][cols-1])
 
 # Print alignment of the two sequences, startMatrix should be traceback matrix of the matrix with highest alignment score in bottom right corner
-def printTraceback(seq1, seq2, traceback_M, traceback_I, traceback_D, curMatrix):
+def printTraceback(seq1, seq2, traceback_M, traceback_I, traceback_D, curMatrix, score):
     rows = len(seq1) + 1
     cols = len(seq2) + 1
 
@@ -263,10 +263,56 @@ def printTraceback(seq1, seq2, traceback_M, traceback_I, traceback_D, curMatrix)
     line2_string = "".join(reversed(line2))
     line3_string = "".join(reversed(line3))
 
-    print(line1_string)
-    print(line2_string)
-    print(line3_string)
+    printStats(seq1, seq2, line2_string, score)
 
+    # divide into chunks of 60 and print
+
+    chunk_size = 60
+    for i in range(0, len(line1_string), chunk_size):
+        print(line1_string[i:i + chunk_size])
+        print(line2_string[i:i + chunk_size])
+        print(line3_string[i:i + chunk_size])
+        print()
+
+    # print(line1_string)
+    # print(line2_string)
+    # print(line3_string)
+
+
+
+
+def printStats(seq1, seq2, line2, score):
+    # count number of |'s in line2
+    matches = line2.count('|')
+    indelCount = 0
+    indelLengths = []
+    newLen = 0
+    for i in range(len(line2)):
+        if line2[i] == ' ':
+            if i == 0:
+                indelCount = indelCount+1
+                newLen =1
+            elif line2[i-1] != ' ':
+                indelCount = indelCount+1
+                newLen = 1
+            elif line2[i-1] == ' ':
+                newLen = newLen+1
+        elif line2[i] != ' ' and i != 0 and line2[i-1] == '0':
+            indelLengths.append(newLen)
+            newLen = 0
+
+    indelMean = sum(indelLengths) / indelCount
+
+    print("Alignment #1:")
+    print()
+    print("Sequence #1: ")
+    print("Sequence #2: ")
+    print("Matches: "+str(matches))
+    print("Percent Identity: " + str(100*(matches/len(line2))) + "%")
+    print("Indels: number=" + str(indelCount) + ", mean length =" + str(indelMean))
+    print("Alignment Length: " + str(len(line2)))
+    print("Score=" + str(score))
+    print()
 
 
 # Take in one letter, return 0, 1, 2, 3, or 4
@@ -285,8 +331,8 @@ def getLetterIndex(letter):
 
 
 def main():
-    seq1 = "ATCCGAT"
-    seq2 = "ATGCAAT"
+    seq1 = "ATCCGATATGCGCGATATGGGGTACCCATAATTTAACCGAGAGCAGATAAGACACCCAGTATA"
+    seq2 = "ATGCAATATTCAGAGGGGCAAATACATAGACCAGCATTACAGGACATAATACCCCATTTAGAGACCTA"
 
     # Read Sequences from class folder
 
