@@ -333,11 +333,15 @@ def main():
 
     close_headers1, close_seqs1 = read_fasta("/hpc/group/coursess25/CS561-CS260/DATA/project1/close-first.fasta")
     close_headers2, close_seqs2 = read_fasta("/hpc/group/coursess25/CS561-CS260/DATA/project1/close-second.fasta")
-    # distant_headers1, distant_seqs1 = read_fasta("/hpc/group/coursess25/CS561-CS260/DATA/project1/distant-first.fasta")
-    # distant_headers2, distant_seqs2 = read_fasta("/hpc/group/coursess25/CS561-CS260/DATA/project1/distant-second.fasta")
+    distant_headers1, distant_seqs1 = read_fasta("/hpc/group/coursess25/CS561-CS260/DATA/project1/distant-first.fasta")
+    distant_headers2, distant_seqs2 = read_fasta("/hpc/group/coursess25/CS561-CS260/DATA/project1/distant-second.fasta")
 
-    seq1 = close_seqs1[9]
-    seq2 = close_seqs2[9]
+    # seq1 = close_seqs1[9]
+    # seq2 = close_seqs2[9]
+
+
+    seq1 = distant_seqs1[9]
+    seq2 = distant_seqs2[9]
 
     alignTwoSequences(seq1, seq2)
 
