@@ -1,3 +1,4 @@
+# Ryan P. Ringel - Affine Scoring
 
 OPEN_PENALTY = -4
 EXTEND_PENALTY = -1
@@ -5,7 +6,27 @@ NEG_INFINITY = -1000 # big enough ?
 
 SCORE = [[5, -1, -4, -4, -2], [-1, 5, -4, -4, -2], [-4, -4, 5, -1, -2], [-4, -4, -1, 5, -2], [-2, -2, -2, -2, -1]]
 
-
+#read seq from the fasta files
+def read_fasta(filename):
+    sequences = []
+    headers = []
+    with open(filename, "r") as file:
+        sequence = ""
+        header = None
+        for line in file:
+            if line.startswith(">"):  #new seq header
+                if sequence:  
+                    #if completed seq when new header; add it and header
+                    sequences.append(sequence)
+                    headers.append(header)
+                header = line.strip()[1:]  #header without ">"
+                sequence = ""  
+            else:
+                sequence += line.strip()  
+        if sequence:  
+            sequences.append(sequence) #final seq: add it
+            headers.append(header)
+    return headers, sequences
 
 def alignTwoSequences(seq1, seq2):
 
@@ -15,12 +36,15 @@ def alignTwoSequences(seq1, seq2):
 
     # create Match matrix: Score of best alignment ending in match
     M = [[0] * cols for _ in range(rows)]
+    traceback_M = [[""] * cols for _ in range(rows)]
 
     # create Insertion matrix: Score of best alignment ending in Insertion
     I = [[0] * cols for _ in range(rows)]
+    traceback_I = [[""] * cols for _ in range(rows)]
 
     # create Deletion matrix: Score of best alignment ending in Deletion
     D = [[0] * cols for _ in range(rows)]
+    traceback_D = [[""] * cols for _ in range(rows)]
 
     # Base case visualization, < is negative infinity
 
@@ -87,17 +111,119 @@ def alignTwoSequences(seq1, seq2):
             I[i][j] = max((M[i][j-1] + OPEN_PENALTY), (I[i][j-1] + EXTEND_PENALTY))
             D[i][j] = max((M[i-1][j] + OPEN_PENALTY), (D[i-1][j] + EXTEND_PENALTY))
 
+            # store values in traceback matrices based on max value: First letter is which matrix, second letter is diag, up, or left
+
+            # traceback for M matrix
+            if (M[i-1][j-1] + s) >= (I[i-1][j-1] + s) and (M[i-1][j-1] + s) >= (D[i-1][j-1] + s):
+                traceback_M[i][j] = "MMD" # traceback points to M matrix on diagonal
+            elif (I[i-1][j-1] + s) >= (M[i-1][j-1] + s) and (I[i-1][j-1] + s) >= (D[i-1][j-1] + s):
+                traceback_M[i][j] = "MID" # traceback came from  I matrix on diagonal
+            elif (D[i-1][j-1] + s) >= (M[i-1][j-1] + s) and (D[i-1][j-1] + s) >= (I[i-1][j-1] + s):
+                traceback_M[i][j] = "MDD" # traceback came from D matrix on diagonal
+
+            # traceback for I matrix
+            if (M[i][j-1] + OPEN_PENALTY) >= (I[i][j-1] + EXTEND_PENALTY):
+                traceback_I[i][j] = "IML" # traceback came from M matrix from left
+            elif (I[i][j-1] + EXTEND_PENALTY) >= (M[i][j-1] + OPEN_PENALTY):
+                traceback_I[i][j] = "IIL" # traceback came from I matrix from left
+
+            # traceback for D matrix
+            if (M[i-1][j] + OPEN_PENALTY) >= (D[i-1][j] + EXTEND_PENALTY):
+                traceback_D[i][j] = "DMU" # traceback came from M matrix from Up
+            elif (D[i-1][j] + EXTEND_PENALTY) >= (M[i-1][j] + OPEN_PENALTY):
+                traceback_D[i][j] = "DDU" # traceback came from D matrix from Up
+
 
     #After Done, print out best scores
     print("Best M: " + str(M[rows-1][cols-1]))
     print("Best I: " + str(I[rows-1][cols-1]))
     print("Best D: " + str(D[rows-1][cols-1]))
 
-    # print("Best M: " + str(M))
-    # print("Best I: " + str(I))
-    # print("Best D: " + str(D))
+    printTraceback(seq1, seq2, traceback_M, traceback_D, traceback_I, traceback_M)
 
-        
+
+# Print alignment of the two sequences, startMatrix should be traceback matrix of the matrix with highest alignment score in bottom right corner
+def printTraceback(seq1, seq2, traceback_M, traceback_I, traceback_D, curMatrix):
+    rows = len(seq1) + 1
+    cols = len(seq2) + 1
+
+    # lines to print out; store as lists for appending, reverse at end
+    line1 = []
+    line2 = []
+    line3 = []
+
+    i = rows - 1
+    j = cols - 1
+
+    # get code for first traceback
+    trace_code = curMatrix[i][j]
+
+    # code structure: ex. "MMD"
+    # 1st letter indicates M, I, or D at current i, j:
+    # 2nd letter indicates which matrix you came from, either M, D, or I
+    # 3rd letter indicates what direction you came from, either D (diagonal), U (up), or L (left)
+
+    while trace_code != "":
+        letter_one = trace_code[0]
+        letter_two = trace_code[1]
+        letter_three = trace_code[2]
+
+        # sequences are 0 indexed, retrieve using i-1/ j-1
+
+        if letter_one == 'M':
+            # i, j is a Match/ Mismatch: 
+            line1.append(seq1[i-1])
+
+            # Determine if a match or mismatch
+            if seq1[i-1] == seq2[j-1]:
+                line2.append('|')
+            else:
+                line2.append('*')
+
+            line3.append(seq2[j-1])
+        elif letter_one == 'I':
+            # i, j is insertion: line3 will have -
+            line1.append(seq1[i-1])
+            line2.append(' ')
+            line3.append('-')
+        elif letter_one == 'D':
+            # i, j is deletion: line1 will have -
+            line1.append('-')
+            line2.append(' ')
+            line3.append(seq2[j-1])
+
+        # retrieve new trace_code from curMatrix and direction
+        if letter_two == 'M':
+            curMatrix = traceback_M
+        elif letter_two == 'I':
+            curMatrix = traceback_I
+        elif letter_two == 'D':
+            curMatrix = traceback_D
+
+        # Update i and j based on direction
+        if letter_three == 'D':
+            # diagonal
+            i = i-1
+            j = j-1
+        elif letter_three == 'U':
+            # up
+            i = i-1
+        elif letter_three == 'L':
+            # left
+            j = j-1
+
+        trace_code = curMatrix[i][j]
+
+
+    line1_string = "".join(reversed(line1))
+    line2_string = "".join(reversed(line2))
+    line3_string = "".join(reversed(line3))
+
+    print(line1_string)
+    print(line2_string)
+    print(line3_string)
+
+
 
 # Take in one letter, return 0, 1, 2, 3, or 4
 def getLetterIndex(letter):
@@ -115,8 +241,15 @@ def getLetterIndex(letter):
 
 
 def main():
-    seq1 = "GTACA"
-    seq2 = "GATA"
+    seq1 = "ACCTAG"
+    seq2 = "GCAATTAG"
+
+    # Read Sequences from class folder
+
+    # close_headers1, close_seqs1 = read_fasta("/hpc/group/coursess25/CS561-CS260/DATA/project1/close-first.fasta")
+    # close_headers2, close_seqs2 = read_fasta("/hpc/group/coursess25/CS561-CS260/DATA/project1/close-second.fasta")
+    # distant_headers1, distant_seqs1 = read_fasta("/hpc/group/coursess25/CS561-CS260/DATA/project1/distant-first.fasta")
+    # distant_headers2, distant_seqs2 = read_fasta("/hpc/group/coursess25/CS561-CS260/DATA/project1/distant-second.fasta")
 
     alignTwoSequences(seq1, seq2)
 
