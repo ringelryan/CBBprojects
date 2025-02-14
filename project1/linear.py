@@ -141,7 +141,7 @@ def needleman_wunsch(seq1, seq2, substitution_matrix, gap_penalty):
     return align1, align2, scoring_matrix[n][m] #aligned seq and score 
 
 
-#either pass og ines or take out the gaps 
+#either pass og ones or take out the gaps 
 #calcs alignment stats (matches, percent, indels, mean indel, alignment length, score); for the output 
 def calc_sum_stats(align1, align2, score, ): #aligned seq and score 
     matches = sum(1 for a, b in zip(align1, align2) if a == b and a != '-' and b != '-')  #counts num of pos where chars are matched
