@@ -2,7 +2,7 @@ Alignment #1:
 Sequence #1: 2
 Sequence #2: 2
 Matches: 180
-Percent identity: 50.56%
+Percent identity: 63.38%
 Indels: number=144, mean length=1.8
 Alignment Length: 356
 Score=724
@@ -35,7 +35,7 @@ Alignment #2:
 Sequence #1: 4
 Sequence #2: 4
 Matches: 185
-Percent identity: 50.82%
+Percent identity: 64.80%
 Indels: number=157, mean length=1.7
 Alignment Length: 364
 Score=746
@@ -72,7 +72,7 @@ Alignment #3:
 Sequence #1: 9
 Sequence #2: 9
 Matches: 179
-Percent identity: 53.27%
+Percent identity: 66.17%
 Indels: number=131, mean length=1.6
 Alignment Length: 336
 Score=738
@@ -105,7 +105,7 @@ Alignment #4:
 Sequence #1: 10
 Sequence #2: 10
 Matches: 188
-Percent identity: 53.26%
+Percent identity: 66.55%
 Indels: number=141, mean length=1.6
 Alignment Length: 353
 Score=775
@@ -138,7 +138,7 @@ Alignment #5:
 Sequence #1: 12
 Sequence #2: 12
 Matches: 186
-Percent identity: 52.54%
+Percent identity: 65.96%
 Indels: number=144, mean length=1.7
 Alignment Length: 354
 Score=762
@@ -171,7 +171,7 @@ Alignment #6:
 Sequence #1: 19
 Sequence #2: 19
 Matches: 179
-Percent identity: 50.14%
+Percent identity: 64.27%
 Indels: number=157, mean length=1.8
 Alignment Length: 357
 Score=717
@@ -204,7 +204,7 @@ Alignment #7:
 Sequence #1: 21
 Sequence #2: 21
 Matches: 183
-Percent identity: 53.04%
+Percent identity: 65.59%
 Indels: number=132, mean length=1.6
 Alignment Length: 345
 Score=753
@@ -237,7 +237,7 @@ Alignment #8:
 Sequence #1: 24
 Sequence #2: 24
 Matches: 183
-Percent identity: 51.26%
+Percent identity: 64.89%
 Indels: number=150, mean length=1.7
 Alignment Length: 357
 Score=741
@@ -270,7 +270,7 @@ Alignment #9:
 Sequence #1: 27
 Sequence #2: 27
 Matches: 181
-Percent identity: 51.27%
+Percent identity: 64.64%
 Indels: number=146, mean length=1.8
 Alignment Length: 353
 Score=733
@@ -303,7 +303,7 @@ Alignment #10:
 Sequence #1: 34
 Sequence #2: 34
 Matches: 187
-Percent identity: 51.66%
+Percent identity: 65.85%
 Indels: number=156, mean length=1.8
 Alignment Length: 362
 Score=760

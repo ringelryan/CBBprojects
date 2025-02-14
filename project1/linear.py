@@ -141,9 +141,9 @@ def needleman_wunsch(seq1, seq2, substitution_matrix, gap_penalty):
     return align1, align2, scoring_matrix[n][m] #aligned seq and score 
 
 
-
+#either pass og ines or take out the gaps 
 #calcs alignment stats (matches, percent, indels, mean indel, alignment length, score); for the output 
-def calc_sum_stats(align1, align2, score): #aligned seq and score 
+def calc_sum_stats(align1, align2, score, ): #aligned seq and score 
     matches = sum(1 for a, b in zip(align1, align2) if a == b and a != '-' and b != '-')  #counts num of pos where chars are matched
 
     indels = sum(1 for a, b in zip(align1, align2) if a == "-" or b == "-") #counts num of gaps in either
@@ -168,9 +168,17 @@ def calc_sum_stats(align1, align2, score): #aligned seq and score
 
     #calcs avg length of indels; no indels ret 0 
     mean_indel_length = sum(indel_lengths) / len(indel_lengths) if indel_lengths else 0 
-    percent_identity = (matches / ((len(align1) + len(align2)) / 2)) * 100
 
+    #remove the gaps
+    seq1_length = len(align1.replace("-", ""))
+    seq2_length = len(align2.replace("-", ""))
 
+    average_length = (seq1_length + seq2_length) / 2
+
+    #calcs the percent identity
+    percent_identity = (matches / average_length) * 100
+
+ 
     #rets dict
     return {
         "matches": matches,
@@ -241,7 +249,7 @@ align_and_write_output("linear_distant_output.txt", distant_headers1, distant_se
 
 
 
-#testing matxches 
+#testing matches 
 seq1 = "AGTCNAC"
 seq2 = "AGTCNTA"
 gap_penalty = 1
@@ -251,7 +259,7 @@ stats = calc_sum_stats(align1, align2, score)
 output = format_alignment_output(1, "test1", "test2", align1, align2, stats)
 print(output)
 
-#testing matxches 
+#testing matches 
 seq1 = "TAGA"
 seq2 = "AGAN"
 gap_penalty = 1
