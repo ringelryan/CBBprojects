@@ -87,8 +87,8 @@ if __name__ == "__main__":
 
     # TESTING
     test_sequences = [
-        "AT",  # k=2
-        "GT",  # k=2
+        "ATT",  # k=2
+        "GTT",  # k=2
     ]
     
     k = 2  # Small k-mer size for testing
