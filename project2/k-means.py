@@ -4,8 +4,12 @@ import numpy as np
 import itertools
 from collections import Counter
 
+# get functions from other parts
+
 import mismatchkernel as mk
 import spectrumkernel as sk
+
+# kmeans iterations
 
 def k_means_kernel(kernel_matrix, k, max_iters=100):
     num_sequences = kernel_matrix.shape[0]
@@ -66,8 +70,8 @@ def create_class_map(fasta_file):
                 if current_sequence:  
                     class_map[current_sequence] = current_class  # Store previous sequence and its class
                 
-                parts = line[1:].split()  # Remove '>' and split header line
-                current_class = parts[-1]  # Assume the last part of the header is the class label
+                parts = line[1:].split()  
+                current_class = parts[-1]  # Save last part of header
                 current_sequence = ""  # Reset sequence
             
             else:
@@ -88,16 +92,16 @@ def print_cluster_proportions(kernel_name, k, k_clusters, proportions, class_cou
             count = round(proportion * class_counts[cluster_id])  # Compute count from proportion
             print(f"{class_name} = {proportion:.2f} ({count})")
 
-        # print()  # Blank line between clusters
+        # print()  
+    print() 
 
-    print()
 
 
 
 
 if __name__ == "__main__":
     fasta_file = "/hpc/group/coursess25/CS561-CS260/DATA/project2/kmeans.fasta"  # Specify FASTA file
-    k = 4  # K-mer size
+    k = 6  # K-mer size
     d = 1  # Maximum mismatches allowed
     
     sequences = sk.read_fasta(fasta_file)
@@ -107,7 +111,7 @@ if __name__ == "__main__":
     kernel_matrix_spectrum = sk.compute_spectrum_kernel(feature_matrix_spectrum)
     
     # Apply k-means with the spectrum kernel
-    k_clusters = 3
+    k_clusters = 5
     labels_spectrum = k_means_kernel(kernel_matrix_spectrum, k_clusters)
     proportions_spectrum, class_counts_spectrum = compute_class_proportions(sequences, labels_spectrum, class_map)
     print_cluster_proportions("SPECTRUM KERNEL", k, k_clusters, proportions_spectrum, class_counts_spectrum)

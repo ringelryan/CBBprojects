@@ -1,0 +1,179 @@
+SPECTRUM KERNEL (KMER=2, CLUSTERS=2):
+CLUSTER 1:
+exon = 0.29 (408)
+intron = 0.36 (499)
+intergenic = 0.35 (483)
+CLUSTER 2:
+exon = 0.84 (92)
+intron = 0.01 (1)
+intergenic = 0.15 (17)
+
+MISMATCH KERNEL (KMER=2, CLUSTERS=2):
+CLUSTER 1:
+exon = 0.27 (372)
+intron = 0.37 (499)
+intergenic = 0.36 (494)
+CLUSTER 2:
+exon = 0.95 (128)
+intron = 0.01 (1)
+intergenic = 0.04 (6)
+
+SPECTRUM KERNEL (KMER=2, CLUSTERS=3):
+CLUSTER 1:
+exon = 0.50 (335)
+intron = 0.32 (212)
+intergenic = 0.18 (119)
+CLUSTER 2:
+exon = 0.95 (91)
+intron = 0.00 (0)
+intergenic = 0.05 (5)
+CLUSTER 3:
+exon = 0.10 (74)
+intron = 0.39 (288)
+intergenic = 0.51 (376)
+
+MISMATCH KERNEL (KMER=2, CLUSTERS=3):
+CLUSTER 1:
+exon = 0.96 (74)
+intron = 0.00 (0)
+intergenic = 0.04 (3)
+CLUSTER 2:
+exon = 0.80 (90)
+intron = 0.01 (1)
+intergenic = 0.19 (22)
+CLUSTER 3:
+exon = 0.26 (336)
+intron = 0.38 (499)
+intergenic = 0.36 (475)
+
+SPECTRUM KERNEL (KMER=2, CLUSTERS=5):
+CLUSTER 1:
+exon = 0.85 (11)
+intron = 0.00 (0)
+intergenic = 0.15 (2)
+CLUSTER 2:
+exon = 0.28 (325)
+intron = 0.39 (453)
+intergenic = 0.33 (379)
+CLUSTER 3:
+exon = 0.88 (15)
+intron = 0.06 (1)
+intergenic = 0.06 (1)
+CLUSTER 4:
+exon = 0.97 (103)
+intron = 0.00 (0)
+intergenic = 0.03 (3)
+CLUSTER 5:
+exon = 0.22 (46)
+intron = 0.22 (46)
+intergenic = 0.56 (115)
+
+MISMATCH KERNEL (KMER=2, CLUSTERS=5):
+CLUSTER 1:
+exon = 0.00 (0)
+intron = 0.00 (0)
+intergenic = 0.00 (0)
+CLUSTER 2:
+exon = 0.83 (55)
+intron = 0.02 (1)
+intergenic = 0.15 (10)
+CLUSTER 3:
+exon = 0.36 (236)
+intron = 0.48 (309)
+intergenic = 0.16 (105)
+CLUSTER 4:
+exon = 0.96 (73)
+intron = 0.00 (0)
+intergenic = 0.04 (3)
+
+SPECTRUM KERNEL (KMER=6, CLUSTERS=2):
+CLUSTER 1:
+exon = 0.48 (416)
+intron = 0.31 (267)
+intergenic = 0.21 (184)
+CLUSTER 2:
+exon = 0.13 (84)
+intron = 0.37 (233)
+intergenic = 0.50 (316)
+
+MISMATCH KERNEL (KMER=6, CLUSTERS=2):
+CLUSTER 1:
+exon = 0.28 (390)
+intron = 0.36 (499)
+intergenic = 0.35 (481)
+CLUSTER 2:
+exon = 0.85 (110)
+intron = 0.01 (1)
+intergenic = 0.15 (19)
+
+SPECTRUM KERNEL (KMER=6, CLUSTERS=3):
+CLUSTER 1:
+exon = 0.10 (69)
+intron = 0.47 (313)
+intergenic = 0.43 (283)
+CLUSTER 2:
+exon = 0.27 (67)
+intron = 0.26 (66)
+intergenic = 0.47 (117)
+CLUSTER 3:
+exon = 0.62 (364)
+intron = 0.21 (121)
+intergenic = 0.17 (100)
+
+MISMATCH KERNEL (KMER=6, CLUSTERS=3):
+CLUSTER 1:
+exon = 0.27 (345)
+intron = 0.39 (498)
+intergenic = 0.35 (450)
+CLUSTER 2:
+exon = 0.70 (100)
+intron = 0.01 (1)
+intergenic = 0.29 (41)
+CLUSTER 3:
+exon = 0.85 (55)
+intron = 0.02 (1)
+intergenic = 0.14 (9)
+
+SPECTRUM KERNEL (KMER=6, CLUSTERS=5):
+CLUSTER 1:
+exon = 0.68 (208)
+intron = 0.15 (46)
+intergenic = 0.16 (50)
+CLUSTER 2:
+exon = 0.29 (30)
+intron = 0.31 (32)
+intergenic = 0.39 (40)
+CLUSTER 3:
+exon = 0.13 (37)
+intron = 0.50 (139)
+intergenic = 0.37 (102)
+CLUSTER 4:
+exon = 0.21 (145)
+intron = 0.38 (270)
+intergenic = 0.41 (290)
+CLUSTER 5:
+exon = 0.72 (80)
+intron = 0.12 (13)
+intergenic = 0.16 (18)
+
+MISMATCH KERNEL (KMER=6, CLUSTERS=5):
+CLUSTER 1:
+exon = 0.73 (16)
+intron = 0.00 (0)
+intergenic = 0.27 (6)
+CLUSTER 2:
+exon = 0.15 (12)
+intron = 0.23 (18)
+intergenic = 0.62 (50)
+CLUSTER 3:
+exon = 0.67 (42)
+intron = 0.00 (0)
+intergenic = 0.33 (21)
+CLUSTER 4:
+exon = 0.24 (283)
+intron = 0.41 (482)
+intergenic = 0.35 (413)
+CLUSTER 5:
+exon = 0.94 (147)
+intron = 0.00 (0)
+intergenic = 0.06 (10)
