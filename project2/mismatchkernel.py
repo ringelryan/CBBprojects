@@ -1,3 +1,5 @@
+# Ryan Ringel
+
 import itertools
 import numpy as np
 
@@ -55,8 +57,8 @@ def compute_feature_matrix_mismatch(sequences, k, d):
         kmer_counts = {kmer: 0 for kmer in kmers}  # Initialize k-mer counts
         for j in range(len(seq) - k + 1):
             kmer = seq[j:j + k]  # Extract k-mer
-            if kmer in kmer_counts:  # Exact match
-                kmer_counts[kmer] += 1
+            # if kmer in kmer_counts:  # Exact match
+            #     kmer_counts[kmer] += 1
             # Consider mismatched k-mers
             for mismatch_kmer in generate_mismatch_kmers(kmer, d):
                 if mismatch_kmer in kmer_counts:
@@ -71,22 +73,22 @@ def compute_mismatch_kernel(feature_matrix):
     return np.dot(feature_matrix, feature_matrix.T)  # Kernel matrix using dot product
 
 if __name__ == "__main__":
-    fasta_file = "/hpc/group/coursess25/CS561-CS260/DATA/project2/kmeans.fasta"  
-    k = 4  # k-mer size
-    d = 1  # Maximum allowed mismatches
+    # fasta_file = "/hpc/group/coursess25/CS561-CS260/DATA/project2/kmeans.fasta"  
+    # k = 4  # k-mer size
+    # d = 1  # Maximum allowed mismatches
 
-    sequences = read_fasta(fasta_file)  
-    feature_matrix = compute_feature_matrix_mismatch(sequences, k, d)  
-    kernel_matrix = compute_mismatch_kernel(feature_matrix)  
+    # sequences = read_fasta(fasta_file)  
+    # feature_matrix = compute_feature_matrix_mismatch(sequences, k, d)  
+    # kernel_matrix = compute_mismatch_kernel(feature_matrix)  
 
-    print("Feature Matrix Shape:", feature_matrix.shape)
-    print("Kernel Matrix Shape:", kernel_matrix.shape)
-    print(kernel_matrix)
+    # print("Feature Matrix Shape:", feature_matrix.shape)
+    # print("Kernel Matrix Shape:", kernel_matrix.shape)
+    # print(kernel_matrix)
 
     # TESTING
     test_sequences = [
-        "ATTGGCAA",  # k=2
-        "GTTACAGT",  # k=2
+        "AT",  # k=2
+        "GT",  # k=2
     ]
     
     k = 2  # Small k-mer size for testing
@@ -100,5 +102,8 @@ if __name__ == "__main__":
 
     for seq in test_sequences:
         print([seq[i:i+k] for i in range(len(seq) - k + 1)])
+
+    
+        
 
     print("Similarity between seq1 and seq2:", kernel_matrix[0, 1])
