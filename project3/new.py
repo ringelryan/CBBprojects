@@ -166,8 +166,8 @@ for SIM in ["sim1", "sim2", "sim6", "sim7"]:
     # transformer_model = get_transformer_model(X_train.shape[1:])
     # train_and_evaluate(transformer_model, X_train, Y_train, X_valid, Y_valid, X_test, Y_test, name="Transformer")
 
-    lstm_model = get_lstm_model(X_train.shape[1:])
-    train_and_evaluate(lstm_model, X_train, Y_train, X_valid, Y_valid, X_test, Y_test, name="LSTM")
+    # lstm_model = get_lstm_model(X_train.shape[1:])
+    # train_and_evaluate(lstm_model, X_train, Y_train, X_valid, Y_valid, X_test, Y_test, name="LSTM")
 
     gru_model = get_gru_model(X_train.shape[1:])
     train_and_evaluate(gru_model, X_train, Y_train, X_valid, Y_valid, X_test, Y_test, name="GRU")
