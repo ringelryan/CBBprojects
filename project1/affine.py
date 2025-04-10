@@ -286,17 +286,24 @@ def printTraceback(seq1, seq2, traceback_M, traceback_I, traceback_D, curMatrix,
 def printStats(seq1, seq2, line2, score):
     # count number of |'s in line2
     matches = line2.count('|')
-    
-    space_segments = re.findall(r' +', line2)  # Matches one or more spaces
+    indelCount = 0
+    indelLengths = []
+    newLen = 0
+    for i in range(len(line2)):
+        if line2[i] == ' ':
+            if i == 0:
+                indelCount = indelCount+1
+                newLen =1
+            elif line2[i-1] != ' ':
+                indelCount = indelCount+1
+                newLen = 1
+            elif line2[i-1] == ' ':
+                newLen = newLen+1
+        elif line2[i] != ' ' and i != 0 and line2[i-1] == '0':
+            indelLengths.append(newLen)
+            newLen = 0
 
-    # Count the number of segments
-    num_segments = len(space_segments)
-
-    # Calculate the mean length of space segments
-    if num_segments > 0:
-        mean_length = sum(len(segment) for segment in space_segments) / num_segments
-    else:
-        mean_length = 0  # Handle the case where there are no spaces
+    indelMean = sum(indelLengths) / indelCount
 
     print("Alignment #1:")
     print()
@@ -304,7 +311,7 @@ def printStats(seq1, seq2, line2, score):
     print("Sequence #2: ")
     print("Matches: "+str(matches))
     print("Percent Identity: " + str(100*(matches/len(line2))) + "%")
-    print("Indels: number=" + str(num_segments) + ", mean length =" + str(mean_length))
+    print("Indels: number=" + str(indelCount) + ", mean length =" + str(indelMean))
     print("Alignment Length: " + str(len(line2)))
     print("Score=" + str(score))
     print()
@@ -326,22 +333,15 @@ def getLetterIndex(letter):
 
 
 def main():
-    # seq1 = "ATCCGATATGCGCGATATGGGGTACCCATAATTTAACCGAGAGCAGATAAGACACCCAGTATA"
-    # seq2 = "ATGCAATATTCAGAGGGGCAAATACATAGACCAGCATTACAGGACATAATACCCCATTTAGAGACCTA"
+    seq1 = "ATCCGATATGCGCGATATGGGGTACCCATAATTTAACCGAGAGCAGATAAGACACCCAGTATA"
+    seq2 = "ATGCAATATTCAGAGGGGCAAATACATAGACCAGCATTACAGGACATAATACCCCATTTAGAGACCTA"
 
     # Read Sequences from class folder
 
-    close_headers1, close_seqs1 = read_fasta("/hpc/group/coursess25/CS561-CS260/DATA/project1/close-first.fasta")
-    close_headers2, close_seqs2 = read_fasta("/hpc/group/coursess25/CS561-CS260/DATA/project1/close-second.fasta")
-    distant_headers1, distant_seqs1 = read_fasta("/hpc/group/coursess25/CS561-CS260/DATA/project1/distant-first.fasta")
-    distant_headers2, distant_seqs2 = read_fasta("/hpc/group/coursess25/CS561-CS260/DATA/project1/distant-second.fasta")
-
-    # seq1 = close_seqs1[9]
-    # seq2 = close_seqs2[9]
-
-
-    seq1 = distant_seqs1[9]
-    seq2 = distant_seqs2[9]
+    # close_headers1, close_seqs1 = read_fasta("/hpc/group/coursess25/CS561-CS260/DATA/project1/close-first.fasta")
+    # close_headers2, close_seqs2 = read_fasta("/hpc/group/coursess25/CS561-CS260/DATA/project1/close-second.fasta")
+    # distant_headers1, distant_seqs1 = read_fasta("/hpc/group/coursess25/CS561-CS260/DATA/project1/distant-first.fasta")
+    # distant_headers2, distant_seqs2 = read_fasta("/hpc/group/coursess25/CS561-CS260/DATA/project1/distant-second.fasta")
 
     alignTwoSequences(seq1, seq2)
 
