@@ -1,0 +1,9 @@
+Model,Dataset,Accuracy,AUC
+CNN,sim1,1.0,1.0
+Transformer,sim1,0.5443,0.559534115
+CNN,sim2,1.0,1.0
+Transformer,sim2,0.55245,0.57890289
+CNN,sim6,0.50265,0.500696545
+Transformer,sim6,0.5,0.49816010000000005
+CNN,sim7,0.4999,0.497986655
+Transformer,sim7,0.5,0.49995002
