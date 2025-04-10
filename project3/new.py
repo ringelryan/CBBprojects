@@ -160,11 +160,11 @@ for SIM in ["sim1", "sim2", "sim6", "sim7"]:
     print(f"Data loaded: {X_train.shape}, Labels: {np.unique(Y_train, return_counts=True)}")
 
     #CNN and Transformer models and evaluate them
-    cnn_model = get_cnn_model(X_train.shape[1:])
-    train_and_evaluate(cnn_model, X_train, Y_train, X_valid, Y_valid, X_test, Y_test, name="CNN")
+    # cnn_model = get_cnn_model(X_train.shape[1:])
+    # train_and_evaluate(cnn_model, X_train, Y_train, X_valid, Y_valid, X_test, Y_test, name="CNN")
 
-    transformer_model = get_transformer_model(X_train.shape[1:])
-    train_and_evaluate(transformer_model, X_train, Y_train, X_valid, Y_valid, X_test, Y_test, name="Transformer")
+    # transformer_model = get_transformer_model(X_train.shape[1:])
+    # train_and_evaluate(transformer_model, X_train, Y_train, X_valid, Y_valid, X_test, Y_test, name="Transformer")
 
     lstm_model = get_lstm_model(X_train.shape[1:])
     train_and_evaluate(lstm_model, X_train, Y_train, X_valid, Y_valid, X_test, Y_test, name="LSTM")
