@@ -85,6 +85,32 @@ def get_transformer_model(input_shape):
     #compile Adam optimizer and binary crossentropy loss
     return model
 
+# define lstm architecture
+def get_lstm_model(input_shape):
+    model = models.Sequential([
+        layers.Input(shape=input_shape),
+        layers.Masking(mask_value=0.0),  # In case of padding
+        layers.LSTM(128, return_sequences=False),  # LSTM layer
+        layers.Dense(128, activation='relu'),
+        layers.Dropout(0.5),
+        layers.Dense(1, activation='sigmoid')
+    ])
+    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    return model
+
+#define gru architecture
+def get_gru_model(input_shape):
+    model = models.Sequential([
+        layers.Input(shape=input_shape),
+        layers.Masking(mask_value=0.0),  # Optional, to handle padded values
+        layers.GRU(128, return_sequences=False),  # GRU layer
+        layers.Dense(128, activation='relu'),
+        layers.Dropout(0.5),
+        layers.Dense(1, activation='sigmoid')
+    ])
+    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    return model
+
 # Function to train and evaluate the model
 def train_and_evaluate(model, X_train, Y_train, X_valid, Y_valid, X_test, Y_test, name="Model"):
     #early stopping callback to prevent overfittin
@@ -139,6 +165,12 @@ for SIM in ["sim1", "sim2", "sim6", "sim7"]:
 
     transformer_model = get_transformer_model(X_train.shape[1:])
     train_and_evaluate(transformer_model, X_train, Y_train, X_valid, Y_valid, X_test, Y_test, name="Transformer")
+
+    lstm_model = get_lstm_model(X_train.shape[1:])
+    train_and_evaluate(lstm_model, X_train, Y_train, X_valid, Y_valid, X_test, Y_test, name="LSTM")
+
+    gru_model = get_gru_model(X_train.shape[1:])
+    train_and_evaluate(gru_model, X_train, Y_train, X_valid, Y_valid, X_test, Y_test, name="GRU")
 
 #save all results
 results_df = pd.DataFrame(results)
